@@ -38,6 +38,21 @@ Learn more about this on [standard-settings](https://github.com/soixantecircuits
 yarn run dev
 ```
 
+### settings-bro
+
+By default, settings-editor will send settings on spacebro. If you want
+to work locally, meaning that you will run this application as an app on
+the same computer as the file you want to edit, skip to next section.
+
+To use this app to edit file on another computer, run [settings-bro](https://github.com/soixantecircuits/settings-bro) on the computer where you want to edit a settings file.
+Edit settings-bro settings file and change attribute `folder.settings`
+to the folder that contains the file to be edited.
+
+### save file locally
+
+Edit `settings.settings.json` and change `useSpacebro` to `false`.
+The app will read and write directly on local disk.
+
 ## Full Build Setup
 
 ``` bash
