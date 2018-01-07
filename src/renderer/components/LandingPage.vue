@@ -26,8 +26,11 @@
 
 <script>
   import JsonForm from './JsonForm'
-  import fs from 'fs'
   import settings from '@/lib/settings'
+  let fs
+  if (!settings.useSpacebro) {
+    fs = require('fs')
+  }
 
   export default {
     name: 'landing-page',
@@ -58,19 +61,35 @@
         error: ''
       }
     },
+    spacebroEvents: {
+      connect: function () {
+        this.getSettings()
+      }
+    },
     created () {
       let vm = this
-      fs.readFile(settings.filepath, 'utf-8', (err, data) => {
-        if (err) {
-          console.log('An error ocurred reading the file :' + err.message)
-          return
-        }
+      if (!settings.useSpacebro) {
+        fs.readFile(settings.filepath, 'utf-8', (err, data) => {
+          if (err) {
+            console.log('An error ocurred reading the file :' + err.message)
+            return
+          }
 
-        // console.log('The file content is : ' + data)
-        vm.data = JSON.parse(data)
-      })
+          // console.log('The file content is : ' + data)
+          vm.data = JSON.parse(data)
+        })
+      } else {
+        this.getSettings()
+      }
     },
     methods: {
+      getSettings () {
+        let vm = this
+        this.$spacebro.emit('getSettings', {path: settings.filepath}, function (data) {
+          console.log(data)
+          vm.data = JSON.parse(data.content)
+        })
+      },
       jsonToForm () {
         try {
           this.data = JSON.parse(this.jsonString)
@@ -93,15 +112,27 @@
         let vm = this
         this.formToJSON()
         if (this.jsonString) {
-          fs.writeFile(settings.filepath, this.jsonString, (error) => {
-            if (error) {
-              this.error = 'Connot write to file!'
-              this.errorModal = true
-            }
-            setTimeout(function () {
-              vm.isSaving = false
-            }, 500)
-          })
+          if (!settings.useSpacebro) {
+            fs.writeFile(settings.filepath, this.jsonString, (error) => {
+              if (error) {
+                this.error = 'Cannot write to file!'
+                this.errorModal = true
+              }
+              setTimeout(function () {
+                vm.isSaving = false
+              }, 500)
+            })
+          } else {
+            this.$spacebro.emit('writeSettings', {path: settings.filepath, content: this.jsonString}, function (data) {
+              if (data.error) {
+                this.error = 'Cannot write to file!'
+                this.errorModal = true
+              }
+              setTimeout(function () {
+                vm.isSaving = false
+              }, 500)
+            })
+          }
         }
       },
       reset () {

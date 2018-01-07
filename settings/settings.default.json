@@ -1,66 +1,55 @@
 {
-    "filepath": "./settings/settings.default.json",
-    "window": {
-        "width": 1920,
-        "height": 1080,
-        "kiosk": false,
-        "autoHideMenuBar": true,
-        "webPreferences": {
-            "plugins": true,
-            "directWrite": true,
-            "webSecurity": false,
-            "experimentalFeatures": false,
-            "experimentalCanvasFeatures": false,
-            "allowRunningInsecureContent": true,
-            "allowDisplayingInsecureContent": true
+  "filepath" : "./settings/settings.default.json",
+  "window" : {
+    "width": 1920,
+    "height": 1080,
+    "kiosk": true,
+    "autoHideMenuBar": true,
+    "webPreferences": {
+      "plugins": true,
+      "directWrite": true,
+      "webSecurity": false,
+      "experimentalFeatures": false,
+      "experimentalCanvasFeatures": false,
+      "allowRunningInsecureContent": true,
+      "allowDisplayingInsecureContent": true
+    }
+  },
+  "appendSwitch": {
+    "--disable-pinch": "",
+    "--disable-touch-adjustment": "",
+    "--touch-events": ""
+  },
+  "useSpacebro": true,
+  "service": {
+    "spacebro":{
+      "host": "spacebro.space",
+      "port": 3333,
+      "channelName": "media-stream",
+      "client": {
+        "name": "settings-editor",
+        "description": "App to edit settings and write on disk or send on spacebro",
+				"out": {
+					"getSettings": {
+						"eventName": "getSettings",
+						"description": "get settings",
+						"type": "all"
+					},
+					"writeSettings": {
+						"eventName": "writeSettings",
+						"description": "write settings",
+						"type": "all"
+					}
         }
-    },
-    "appendSwitch": {
-        "--disable-pinch": "",
-        "--disable-touch-adjustment": "",
-        "--touch-events": ""
-    },
-    "service": {
-        "spacebro": {
-            "host": "spacebro.space",
-            "port": 3333,
-            "channelName": "media-stream",
-            "client": {
-                "name": "vue-example",
-                "description": "exemple app",
-                "in": {
-                    "inMedia": {
-                        "eventName": "inMedia",
-                        "description": "Input media",
-                        "type": "all"
-                    },
-                    "inMessage": {
-                        "eventName": "inMessage",
-                        "description": "Input message",
-                        "type": "all"
-                    }
-                },
-                "out": {
-                    "outMedia": {
-                        "eventName": "outMedia",
-                        "description": "Output media",
-                        "type": "all"
-                    },
-                    "outMessage": {
-                        "eventName": "outMessage",
-                        "description": "Output message",
-                        "type": "all"
-                    }
-                }
-            },
-            "connection": [
-                "vue-example/outMedia => vue-example/inMedia",
-                "vue-example/outMessage => vue-example/inMessage"
-            ]
-        }
-    },
-    "appendArgument": [
-        "--overscroll-history-navigation=0",
-        "--ignore-gpu-blacklist"
-    ]
+      },
+      "connection": [
+        "settings-editor/getSettings => settings-bro/getSettings",
+        "settings-editor/writeSettings => settings-bro/writeSettings"
+      ]
+    }
+  },
+  "appendArgument": [
+    "--overscroll-history-navigation=0",
+    "--ignore-gpu-blacklist"
+  ]
 }
