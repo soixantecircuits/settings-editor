@@ -7,7 +7,7 @@
 We use [standard-settings](https://github.com/soixantecircuits/standard-settings) a lot.
 Actually we use it in every nodeJS and electron project.
 
-Sometimes, we need a non-developer humans to change the settings in production.  
+Sometimes, we need a regular human to change the settings in production.  
 This an alternative to `ssh` + `vim`
 
 ## 🌍 Installation
