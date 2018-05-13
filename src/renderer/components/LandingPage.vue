@@ -1,6 +1,6 @@
 <template>
   <div id="landing-page">
-    <img class="vue-logo" src="./../assets/logo.svg">
+    <img class="vue-logo" v-if="settings.useLogo" src="./../assets/logo.svg">
     <div class="vue-json-form">
       <h1>Settings {{settings.filepath}}</h1>
       <Button type="primary" :loading="isSaving" @click="save">Save</Button>
