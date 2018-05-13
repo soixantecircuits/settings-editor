@@ -7,13 +7,18 @@
           <Poptip
               confirm
               title="Delete this?"
-              @on-ok="deleteNode">
+              @on-ok="sendDeleteEvent">
             <Button class="delete-button" type="ghost" shape="circle" icon="close-round" size="small"></Button>
           </Poptip>
           <p slot="content">
             <template v-for="(item, index) in internalValue">
-              <json-node :prop="index.toString()" v-model="internalValue[index]"></json-node>
+              <json-node
+                :prop="index.toString()"
+                v-model="internalValue[index]"
+                v-on:delete-this-node="removeNode(index)"
+              ></json-node>
             </template>
+            <Button class="add-button" type="dashed" icon="plus" @click="addValue"></Button>
           </p>
         </Panel>
       </Collapse>
@@ -22,6 +27,7 @@
       <Collapse v-model="collapseValue">
         <Panel isActive=true>
           {{prop}}
+          <Button class="delete-value-button" type="dashed" icon="minus" size="small" @click.stop.prevent="sendDeleteEvent"></Button>
           <p slot="content">
             <template v-for="(subvalue, subprop) in internalValue">
               <json-node :prop="subprop" v-model="internalValue[subprop]"></json-node>
@@ -109,8 +115,15 @@
           Vue.set(this.value, name, newItem)
         }
       },
-      deleteNode () {
-        // TODO (fluency03): delete a prop
+      addValue () {
+        const tpl = Object.assign({}, this.internalValue[(this.internalValue.length - 1)])
+        console.log(tpl)
+        this.value.push(tpl)
+      },
+      removeNode (index) {
+        this.value.splice(index, 1)
+      },
+      sendDeleteEvent () {
         this.$emit('delete-this-node')
       },
       isArray (value) {
@@ -146,6 +159,10 @@
   .delete-button {
     margin: auto;
   },
+
+  .add-button {
+    /*margin-top: 10px;*/
+  }
 
   Collapse {
     margin-bottom: 10px;
