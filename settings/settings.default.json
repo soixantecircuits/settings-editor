@@ -1,6 +1,7 @@
 {
   "filepath" : "./settings/settings.default.json",
   "useLogo": true,
+  "numberStep": 0.1,
   "window" : {
     "width": 1920,
     "height": 1080,

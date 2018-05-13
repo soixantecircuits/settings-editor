@@ -37,7 +37,11 @@
     </div>
     <div v-else-if="isNumber(internalValue)">
       <Form-item :label="prop" class="switch">
-        <Input-number v-model="internalValue"></Input-number>
+        <Input-number
+          v-model="internalValue"
+          :step="settings.numberStep || 1"
+        >
+        </Input-number>
       </Form-item>
     </div>
     <div v-else-if="isBoolean(internalValue)">
@@ -58,11 +62,13 @@
 
 <script>
   import Vue from 'vue'
+  import settings from '@/lib/settings'
 
   export default {
     name: 'json-node',
     data () {
       return {
+        settings,
         collapseValue: '0',
         internalValue: this.value
       }
