@@ -2,7 +2,7 @@
   <div id="landing-page">
     <img class="vue-logo" v-if="settings.useLogo" src="./../assets/logo.svg">
     <div class="vue-json-form">
-      <h1>Settings {{settings.filepath}}</h1>
+      <h1>Settings <code>{{settings.filepath}}</code></h1>
       <Button type="primary" :loading="isSaving" @click="save">Save</Button>
       <!--<Input v-model="jsonString" type="textarea" :autosize="true" placeholder="JSON..."></Input>
       <br><br>
